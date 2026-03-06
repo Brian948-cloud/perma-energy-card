@@ -31,6 +31,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* 核心截圖區域：優化圓角與內容溢出 */
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
@@ -39,11 +40,14 @@
       flex-direction: column;
       align-items: center;
       box-sizing: border-box;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      border-radius: 12px;
-      padding: 0 20px;
+      /* 增加圓角弧度，並確保下載時背景跟著切圓角 */
+      border-radius: 24px; 
+      overflow: hidden; 
       position: relative;
       margin-bottom: 25px;
+      /* 網頁顯示時的陰影，截圖時會透過 JS 處理 */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 0 20px;
     }
 
     .header-container {
@@ -133,22 +137,6 @@
     button:active { transform: scale(0.96); opacity: 0.9; }
     .hidden { display: none !important; }
   </style>
-
-  <script>
-    (function(document,navigator,standalone) {
-      if ((standalone in navigator) && navigator[standalone]) {
-        var curnode, location=document.location, stop=/^(a|html)$/i;
-        document.addEventListener('click', function(e) {
-          curnode=e.target;
-          while (!(stop).test(curnode.nodeName)) { curnode=curnode.parentNode; }
-          if('href' in curnode && ( curnode.href.indexOf('http') || ~curnode.href.indexOf(location.host) ) ) {
-            e.preventDefault();
-            location.href = curnode.href;
-          }
-        },false);
-      }
-    })(document,window.navigator,'standalone');
-  </script>
 </head>
 <body>
 
@@ -180,7 +168,6 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-  // 已將原本「給予自己慈悲」更換為「看見內在情緒」
   const quotes = [
     { text: "今天的每一份好心情，\n都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
     { text: "發現生活微小美好，\n就是幸福的開始。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
@@ -240,15 +227,30 @@
 
   async function saveAsImage() {
     const area = document.getElementById("capture-area");
-    const canvas = await html2canvas(area, { 
-      scale: 3, 
-      useCORS: true,
-      backgroundColor: "#f8f8f8" 
-    });
-    const link = document.createElement("a");
-    link.download = `能量卡-${new Date().getTime()}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    
+    // 下載時暫時移除陰影，避免圓角邊緣產生雜訊
+    const originalShadow = area.style.boxShadow;
+    area.style.boxShadow = "none";
+
+    try {
+      const canvas = await html2canvas(area, { 
+        scale: 3, 
+        useCORS: true,
+        // 關鍵設定：背景為 null，讓圓角外呈現透明
+        backgroundColor: null,
+        logging: false
+      });
+
+      const link = document.createElement("a");
+      link.download = `能量卡-${new Date().getTime()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("儲存圖片失敗", error);
+    } finally {
+      // 恢復網頁上的陰影
+      area.style.boxShadow = originalShadow;
+    }
   }
 </script>
 
