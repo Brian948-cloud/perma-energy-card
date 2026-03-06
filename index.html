@@ -34,7 +34,7 @@
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
-      height: 412.5px; /* 完美 IG 4:5 比例 */
+      height: 412.5px; 
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,14 +74,13 @@
       width: 100%;
     }
 
-    /* 修正重點：主文字兩行顯示與行距控制 */
     .quote-display {
-      font-size: 1.6rem;
-      line-height: 2.2; /* 增加行高，模擬圖片中的優雅感 */
+      font-size: 1.55rem; /* 調回適中的兩行字體大小 */
+      line-height: 2.3;    /* 增加行距，讓兩句之間更清晰 */
       font-weight: 500;
       color: #444;
       letter-spacing: 1px;
-      white-space: pre-line; /* 強制執行 \n 換行指令 */
+      white-space: pre-line;
       display: block;
       width: 100%;
     }
@@ -90,10 +89,11 @@
       padding-bottom: 35px;
       text-align: center;
       width: 100%;
-      min-height: 70px;
+      min-height: 75px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-end;
     }
 
     .category-tag {
@@ -105,7 +105,7 @@
       color: #555;
       margin-bottom: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      white-space: nowrap !important; /* 分類標籤維持單行 */
+      white-space: nowrap !important;
     }
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
@@ -131,6 +131,22 @@
     button:active { transform: scale(0.96); opacity: 0.9; }
     .hidden { display: none !important; }
   </style>
+
+  <script>
+    (function(document,navigator,standalone) {
+      if ((standalone in navigator) && navigator[standalone]) {
+        var curnode, location=document.location, stop=/^(a|html)$/i;
+        document.addEventListener('click', function(e) {
+          curnode=e.target;
+          while (!(stop).test(curnode.nodeName)) { curnode=curnode.parentNode; }
+          if('href' in curnode && ( curnode.href.indexOf('http') || ~curnode.href.indexOf(location.host) ) ) {
+            e.preventDefault();
+            location.href = curnode.href;
+          }
+        },false);
+      }
+    })(document,window.navigator,'standalone');
+  </script>
 </head>
 <body>
 
@@ -162,7 +178,7 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-  // 手動校對 20 則金句的換行位置，確保視覺美觀
+  // 已全數優化為一句一行（共兩行）
   const quotes = [
     { text: "今天的每一份好心情，\n都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
     { text: "允許自己休息，\n也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
