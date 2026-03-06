@@ -6,7 +6,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="心理能量卡">
   <link rel="apple-touch-icon" href="https://via.placeholder.com/180/e5d8b5/5a5a5a?text=能量卡">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>心理能量卡</title>
   
@@ -32,7 +31,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* 嚴格執行 IG 4:5 比例 */
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
@@ -76,10 +74,11 @@
 
     .quote-display {
       font-size: 1.5rem;
-      line-height: 1.9;
+      line-height: 2; /* 稍微增加行高，讓兩行文字更有呼吸感 */
       font-weight: 500;
       color: #444;
       letter-spacing: 0.5px;
+      white-space: pre-line; /* 關鍵修正：允許識別換行符號 */
     }
 
     .footer-area {
@@ -89,21 +88,18 @@
       min-height: 70px;
     }
 
-    /* 修正重點：強制單行顯示 */
     .category-tag {
       display: inline-block;
       padding: 6px 12px;
       border-radius: 20px;
-      font-size: 0.8rem; /* 稍微縮小字體以利單行容納 */
+      font-size: 0.8rem;
       font-weight: 700;
       color: #555;
       margin-bottom: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      
-      white-space: nowrap;    /* 強制不換行 */
-      overflow: hidden;       /* 溢出隱藏 */
-      max-width: 90%;         /* 限制寬度 */
-      text-overflow: clip;    /* 溢出時直接截斷而非省略號，保持簡潔 */
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 90%;
     }
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
@@ -131,6 +127,7 @@
   </style>
 
   <script>
+    // PWA 跳轉修正
     (function(document,navigator,standalone) {
       if ((standalone in navigator) && navigator[standalone]) {
         var curnode, location=document.location, stop=/^(a|html)$/i;
@@ -176,28 +173,28 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-  // 20 張能量語句
+  // 已將金句改為兩行排版，使用 \n 進行換行
   const quotes = [
-    { text: "今天的每一份好心情，都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
-    { text: "允許自己休息，也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
-    { text: "發現生活中的微小美好，就是幸福的開始。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
-    { text: "感受當下的呼吸，讓心平靜下來。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
-    { text: "全心投入當下，你會發現時間的魔力。", cat: "PERMA • Engagement 投入", type: "E" },
-    { text: "專注於你喜愛的事，內心會充滿力量。", cat: "PERMA • Engagement 投入", type: "E" },
-    { text: "在挑戰中找到樂趣，就是一種成長。", cat: "PERMA • Engagement 投入", type: "E" },
-    { text: "沉浸在創作的時刻，靈魂會發光。", cat: "PERMA • Engagement 投入", type: "E" },
-    { text: "一個溫暖的問候，能建立深厚的連結。", cat: "PERMA • Relationships 人際關係", type: "R" },
-    { text: "學會傾聽他人，也學會傾聽自己。", cat: "PERMA • Relationships 人際關係", type: "R" },
-    { text: "真誠的讚美，是人與人之間最美的橋樑。", cat: "PERMA • Relationships 人際關係", type: "R" },
-    { text: "即使意見不同，我們依然可以互相尊重。", cat: "PERMA • Relationships 人際關係", type: "R" },
-    { text: "明白行為背後的意義，讓每一步更有力。", cat: "PERMA • Meaning 意義", type: "M" },
-    { text: "你的存在，本身就是一個獨特的意義。", cat: "PERMA • Meaning 意義", type: "M" },
-    { text: "幫助他人，也能讓自己的內心更豐盛。", cat: "PERMA • Meaning 意義", type: "M" },
-    { text: "在瑣碎的日常中，尋找值得堅持的價值。", cat: "PERMA • Meaning 意義", type: "M" },
-    { text: "今天的一小步，也是邁向成長的重要一步。", cat: "PERMA • Accomplishment 成就", type: "A" },
-    { text: "感謝自己今天的努力，你已經做得很好了。", cat: "PERMA • Accomplishment 成就", type: "A" },
-    { text: "完成一件小事，就是給自己最好的肯定。", cat: "PERMA • Accomplishment 成就", type: "A" },
-    { text: "失敗只是暫時的停留，你可以再次出發。", cat: "PERMA • Accomplishment 成就", type: "A" }
+    { text: "今天的每一份好心情，\n都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "允許自己休息，\n也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "發現生活中的微小美好，\n就是幸福的開始。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "感受當下的呼吸，\n讓心平靜下來。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "全心投入當下，\n你會發現時間的魔力。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "專注於你喜愛的事，\n內心會充滿力量。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "在挑戰中找到樂趣，\n就是一種成長。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "沉浸在創作的時刻，\n靈魂會發光。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "一個溫暖的問候，\n能建立深厚的連結。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "學會傾聽他人，\n也學會傾聽自己。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "真誠的讚美，\n是人與人之間最美的橋樑。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "即使意見不同，\n我們依然可以互相尊重。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "明白行為背後的意義，\n讓每一步更有力。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "你的存在，\n本身就是一個獨特的意義。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "幫助他人，\n也能讓自己的內心更豐盛。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "在瑣碎的日常中，\n尋找值得堅持的價值。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "今天的一小步，\n也是邁向成長的重要一步。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "感謝自己今天的努力，\n你已經做得很好了。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "完成一件小事，\n就是給自己最好的肯定。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "失敗只是暫時的停留，\n你可以再次出發。", cat: "PERMA • Accomplishment 成就", type: "A" }
   ];
 
   function drawCard() {
