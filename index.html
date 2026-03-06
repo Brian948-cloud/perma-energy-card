@@ -2,60 +2,63 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>心理能量卡</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
-    --bg-color: #f2eee2; 
-    --btn-default: #ebdcb2;
-    --text-main: #3a3a3a;
+    --bg-main: #f2eee2; 
     --color-p: #ffb7b2; --color-e: #ffdac1; --color-r: #b2e2f2; --color-m: #e2f0cb; --color-a: #d9c2f2;
+    --btn-blue: #7d96ff;
   }
 
   body {
     font-family: 'Noto Serif TC', serif;
-    background-color: #e8e8e8;
+    background-color: #f8f8f8;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    -webkit-tap-highlight-color: transparent;
   }
 
+  /* 嚴格執行 IG 4:5 比例，並增加圓潤陰影 */
   #capture-area {
-    background-color: var(--bg-color);
-    width: 360px; 
-    height: 450px; 
+    background-color: var(--bg-main);
+    width: 330px; 
+    height: 412.5px; /* 330 * 1.25 = 412.5 (完美 4:5) */
     display: flex;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    border-radius: 10px;
-    padding: 0 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 0 25px;
     position: relative;
+    margin-bottom: 25px;
   }
 
+  /* 上方鑲嵌標題 */
   .header-container {
-    margin-top: 35px;
+    margin-top: 30px;
     background: white;
-    width: 180px; height: 50px;
-    border-radius: 25px;
+    width: 160px; height: 46px;
+    border-radius: 23px;
     display: flex; justify-content: center; align-items: center;
   }
 
   .title-tag {
-    background: var(--btn-default);
-    width: 154px; height: 36px;
-    border-radius: 18px;
+    background: #e5d8b5;
+    width: 138px; height: 32px;
+    border-radius: 16px;
     font-weight: 700;
-    font-size: 1rem;
-    color: #555;
+    font-size: 0.95rem;
+    color: #5a5a5a;
     display: flex; justify-content: center; align-items: center;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
   }
 
   .content-area {
@@ -67,48 +70,51 @@
 
   .quote-display {
     font-size: 1.5rem;
-    line-height: 1.8;
+    line-height: 1.9;
     font-weight: 500;
-    color: var(--text-main);
+    color: #444;
+    letter-spacing: 0.5px;
   }
 
   .footer-area {
-    padding-bottom: 40px;
+    padding-bottom: 35px;
     text-align: center;
-    min-height: 80px;
+    min-height: 70px;
   }
 
   .category-tag {
     display: inline-block;
-    padding: 6px 22px;
+    padding: 8px 22px;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-bottom: 8px;
-    color: #444;
+    color: #555;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
   }
 
-  .date-display {
-    color: #999;
-    font-size: 0.8rem;
-  }
+  .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
 
-  .controls { margin-top: 25px; display: flex; gap: 15px; }
+  /* 下方按鈕美化 */
+  .controls { display: flex; gap: 18px; }
 
   button {
     font-family: 'Noto Serif TC', serif;
-    background-color: white;
     border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
+    padding: 14px 28px;
+    border-radius: 30px;
     font-size: 1rem;
     cursor: pointer;
     font-weight: 700;
-    color: #666;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
   }
 
-  .save-btn { background-color: #6c8cff; color: white; }
+  .save-btn { background-color: var(--btn-blue); color: white; }
+  .reset-btn { background-color: white; color: #666; }
+  .draw-btn { background-color: #e5d8b5; color: #5a5a5a; }
+
+  button:active { transform: scale(0.96); opacity: 0.9; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -134,15 +140,15 @@
 </div>
 
 <div class="controls">
-  <button id="start-btn" onclick="drawCard()">抽一張卡</button>
+  <button id="start-btn" class="draw-btn" onclick="drawCard()">抽一張卡</button>
   <button id="save-btn" class="save-btn hidden" onclick="saveAsImage()">儲存圖卡</button>
-  <button id="reset-btn" class="hidden" onclick="resetPage()">再抽一次</button>
+  <button id="reset-btn" class="reset-btn hidden" onclick="resetPage()">再抽一次</button>
 </div>
 
 <script>
 const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-// 已擴充至 20 張卡片
+// 目前有 20 張，你可以隨時按這個格式增加到 200 張
 const quotes = [
   { text: "今天的每一份好心情，都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
   { text: "允許自己休息，也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
@@ -190,9 +196,14 @@ function resetPage() {
 
 async function saveAsImage() {
   const area = document.getElementById("capture-area");
-  const canvas = await html2canvas(area, { scale: 3 });
+  // 針對 iOS 調整儲存參數，確保高解析度
+  const canvas = await html2canvas(area, { 
+    scale: 3, 
+    useCORS: true,
+    backgroundColor: "#f8f8f8" 
+  });
   const link = document.createElement("a");
-  link.download = `心理能量卡-${new Date().getTime()}.png`;
+  link.download = `能量卡-${new Date().getTime()}.png`;
   link.href = canvas.toDataURL("image/png");
   link.click();
 }
