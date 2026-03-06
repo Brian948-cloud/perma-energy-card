@@ -5,11 +5,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="心理能量卡">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
   <link rel="apple-touch-icon" href="https://via.placeholder.com/180/e5d8b5/5a5a5a?text=能量卡">
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>心理能量卡</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -32,6 +32,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* 嚴格執行 IG 4:5 比例 */
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
@@ -42,7 +43,7 @@
       box-sizing: border-box;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       border-radius: 12px;
-      padding: 0 25px;
+      padding: 0 20px;
       position: relative;
       margin-bottom: 25px;
     }
@@ -84,28 +85,35 @@
     .footer-area {
       padding-bottom: 35px;
       text-align: center;
+      width: 100%;
       min-height: 70px;
     }
 
+    /* 修正重點：強制單行顯示 */
     .category-tag {
       display: inline-block;
-      padding: 8px 22px;
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: 0.8rem; /* 稍微縮小字體以利單行容納 */
       font-weight: 700;
       color: #555;
       margin-bottom: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      
+      white-space: nowrap;    /* 強制不換行 */
+      overflow: hidden;       /* 溢出隱藏 */
+      max-width: 90%;         /* 限制寬度 */
+      text-overflow: clip;    /* 溢出時直接截斷而非省略號，保持簡潔 */
     }
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
 
-    .controls { display: flex; gap: 18px; }
+    .controls { display: flex; gap: 15px; }
 
     button {
       font-family: 'Noto Serif TC', serif;
       border: none;
-      padding: 14px 28px;
+      padding: 12px 25px;
       border-radius: 30px;
       font-size: 1rem;
       cursor: pointer;
@@ -168,6 +176,7 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
+  // 20 張能量語句
   const quotes = [
     { text: "今天的每一份好心情，都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
     { text: "允許自己休息，也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
