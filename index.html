@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <meta charset="UTF-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="心理能量卡">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
   <link rel="apple-touch-icon" href="https://via.placeholder.com/180/e5d8b5/5a5a5a?text=能量卡">
   
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>心理能量卡</title>
-  
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     :root {
       --bg-main: #f2eee2; 
-      --color-p: #ffb7b2; /* Positive Emotions: 粉紅 */
-      --color-e: #ffdac1; /* Engagement: 淺橘 */
-      --color-r: #b2e2f2; /* Relationships: 淺藍 */
-      --color-m: #e2f0cb; /* Meaning: 淺綠 */
-      --color-a: #d9c2f2; /* Accomplishment: 淺紫 */
+      --color-p: #ffb7b2; --color-e: #ffdac1; --color-r: #b2e2f2; --color-m: #e2f0cb; --color-a: #d9c2f2;
       --btn-blue: #7d96ff;
     }
 
@@ -37,7 +32,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* 嚴格執行 IG 4:5 比例 (330x412.5) */
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
@@ -53,7 +47,6 @@
       margin-bottom: 25px;
     }
 
-    /* 上方鑲嵌標題：內外形狀統一為膠囊型 */
     .header-container {
       margin-top: 30px;
       background: white;
@@ -107,7 +100,6 @@
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
 
-    /* 控制按鈕區 */
     .controls { display: flex; gap: 18px; }
 
     button {
@@ -129,6 +121,22 @@
     button:active { transform: scale(0.96); opacity: 0.9; }
     .hidden { display: none !important; }
   </style>
+
+  <script>
+    (function(document,navigator,standalone) {
+      if ((standalone in navigator) && navigator[standalone]) {
+        var curnode, location=document.location, stop=/^(a|html)$/i;
+        document.addEventListener('click', function(e) {
+          curnode=e.target;
+          while (!(stop).test(curnode.nodeName)) { curnode=curnode.parentNode; }
+          if('href' in curnode && ( curnode.href.indexOf('http') || ~curnode.href.indexOf(location.host) ) ) {
+            e.preventDefault();
+            location.href = curnode.href;
+          }
+        },false);
+      }
+    })(document,window.navigator,'standalone');
+  </script>
 </head>
 <body>
 
@@ -160,7 +168,6 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-  // 擴充至 20 張能量卡片
   const quotes = [
     { text: "今天的每一份好心情，都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
     { text: "允許自己休息，也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
