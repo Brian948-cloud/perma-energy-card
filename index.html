@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>今日心理能量卡</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+body, html {
+margin:0;
+padding:0;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:"Noto Sans TC", sans-serif;
+background:#FDF5E6;
+}
+
+#cardContainer{
+width:90vw;
+max-width:340px;
+height:420px;
+perspective:1200px;
+}
+
+.card-inner{
+width:100%;
+height:100%;
+position:relative;
+transform-style:preserve-3d;
+transition:transform .6s;
+}
+
+.card.flipped .card-inner{
+transform:rotateY(180deg);
+}
+
+.card-face{
+position:absolute;
+width:100%;
+height:100%;
+border-radius:28px;
+backface-visibility:hidden;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:25px;
+box-shadow:0 15px 35px rgba(0,0,0,0.1);
+}
+
+.card-front{
+background:linear-gradient(135deg,#fffdf7,#f6e8cc);
+font-size:24px;
+font-weight:bold;
+justify-content:center;
+}
+
+.card-back{
+background:white;
+transform:rotateY(180deg);
+justify-content:space-between;
+}
+
+.card-title{
+background:#fdf5e6;
+padding:10px 20px;
+border-radius:40px;
+font-weight:bold;
+}
+
+.quote{
+font-size:22px;
+text-align:center;
+line-height:1.6;
+}
+
+.badge{
+padding:8px 18px;
+border-radius:20px;
+font-size:14px;
+}
+
+.badge-P{background:#FFD966;}
+.badge-E{background:#6FA8DC;}
+.badge-R{background:#EA9999;}
+.badge-M{background:#B4A7D6;}
+.badge-A{background:#93C47D;}
+
+.buttons{
+position:fixed;
+bottom:30px;
+display:none;
+}
+
+button{
+padding:12px 24px;
+border:none;
+border-radius:25px;
+background:#EAD8B7;
+margin:5px;
+font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="cardContainer">
+<div class="card" id="card">
+<div class="card-inner">
+
+<div class="card-face card-front">
+點擊抽取<br>今日心理能量
+</div>
+
+<div class="card-face card-back">
+
+<div class="card-title">今日心理能量卡</div>
+
+<div class="quote" id="quote"></div>
+
+<div class="badge" id="badge"></div>
+
+<div id="date"></div>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="buttons" id="buttons">
+<button onclick="downloadCard()">儲存圖卡</button>
+<button onclick="location.reload()">再抽一次</button>
+</div>
+
+<script>
+
+const cards=[
+
+{quote:"今天的一小步，也是邁向成長的重要一步。",tag:"Accomplishment 成就",type:"A"},
+{quote:"情緒被看見時，力量就開始恢復。",tag:"Relationships 人際連結",type:"R"},
+{quote:"專注當下的投入，就是通往心流的入口。",tag:"Engagement 心流投入",type:"E"},
+{quote:"即使在困難中，人仍能找到生命的意義。",tag:"Meaning 生命意義",type:"M"},
+{quote:"允許自己慢慢來，也是一種成熟的力量。",tag:"Positive Emotion 正向情緒",type:"P"}
+
+];
+
+const card=document.getElementById("card");
+
+card.addEventListener("click",function(){
+
+if(card.classList.contains("flipped")) return;
+
+const res=cards[Math.floor(Math.random()*cards.length)];
+
+document.getElementById("quote").innerText=res.quote;
+
+const b=document.getElementById("badge");
+
+b.innerText="PERMA · "+res.tag;
+
+b.className="badge badge-"+res.type;
+
+document.getElementById("date").innerText=new Date().toLocaleDateString();
+
+card.classList.add("flipped");
+
+document.getElementById("buttons").style.display="block";
+
+});
+
+function downloadCard(){
+
+html2canvas(document.getElementById("cardContainer"),{
+scale:3
+}).then(canvas=>{
+
+const link=document.createElement("a");
+
+link.download="心理能量卡.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
