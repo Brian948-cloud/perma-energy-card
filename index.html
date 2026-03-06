@@ -98,15 +98,15 @@
 
     .category-tag {
       display: inline-block;
-      padding: 6px 15px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.72rem; 
+      font-size: 0.7rem; 
       font-weight: 700;
       color: #555;
       margin-bottom: 6px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.03);
       white-space: nowrap !important;
-      letter-spacing: -0.2px;
+      letter-spacing: -0.3px; 
     }
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
@@ -121,7 +121,8 @@
       font-size: 1rem;
       cursor: pointer;
       font-weight: 700;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      color: #666;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       transition: all 0.2s ease;
     }
 
@@ -179,38 +180,38 @@
 <script>
   const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-  // 30 則嚴格遵守 PERMA 原則的金句
+  // 已將原本「給予自己慈悲」更換為「看見內在情緒」
   const quotes = [
-    { text: "今天的每一份好心情，\n都是珍貴的禮物。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "發現生活微小美好，\n就是幸福的開始。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "用感謝的心情，\n開啟美好的一天。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "給予自己慈悲，\n像對待好友一樣。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "允許自己休息，\n也是前進的一部分。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "維持內心的平靜，\n穩定自己的能量。", cat: "PERMA • 正向情緒", type: "P" },
-    { text: "全心投入當下，\n發現時間的魔力。", cat: "PERMA • 投入", type: "E" },
-    { text: "專注於喜愛的事，\n內心會充滿力量。", cat: "PERMA • 投入", type: "E" },
-    { text: "在挑戰中找樂趣，\n就是一種成長。", cat: "PERMA • 投入", type: "E" },
-    { text: "沉浸在創作時刻，\n靈魂會閃閃發光。", cat: "PERMA • 投入", type: "E" },
-    { text: "感受呼吸的流動，\n專注於此時此刻。", cat: "PERMA • 投入", type: "E" },
-    { text: "在繁忙的生活中，\n保留獨處的空間。", cat: "PERMA • 投入", type: "E" },
-    { text: "一個溫暖的問候，\n能建立深厚連結。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "學會傾聽他人，\n也學會傾聽自己。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "真誠的讚美，\n是人際間最美的橋樑。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "即使意見不同，\n依然能互相尊重。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "主動分享善意，\n溫暖身邊的人。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "建立健康界線，\n保護彼此的空間。", cat: "PERMA • 人際關係", type: "R" },
-    { text: "明白行為的意義，\n讓每一步更有力。", cat: "PERMA • 意義", type: "M" },
-    { text: "你的存在本身，\n就是獨特的意義。", cat: "PERMA • 意義", type: "M" },
-    { text: "透過幫助他人，\n內心會更豐盛。", cat: "PERMA • 意義", type: "M" },
-    { text: "在瑣碎日常中，\n尋找堅持的價值。", cat: "PERMA • 意義", type: "M" },
-    { text: "追尋內心渴望，\n活出真實的模樣。", cat: "PERMA • 意義", type: "M" },
-    { text: "相信自己的力量，\n能創造正向影響。", cat: "PERMA • 意義", type: "M" },
-    { text: "今天的一小步，\n是邁向成長的一步。", cat: "PERMA • 成就", type: "A" },
-    { text: "感謝自己的努力，\n你已經做得很好了。", cat: "PERMA • 成就", type: "A" },
-    { text: "完成一件小事，\n就是最好的肯定。", cat: "PERMA • 成就", type: "A" },
-    { text: "失敗是暫時停留，\n你可以再次出發。", cat: "PERMA • 成就", type: "A" },
-    { text: "慶祝微小進步，\n累積成功的信心。", cat: "PERMA • 成就", type: "A" },
-    { text: "堅持自己的節奏，\n不急著與人比較。", cat: "PERMA • 成就", type: "A" }
+    { text: "今天的每一份好心情，\n都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "發現生活微小美好，\n就是幸福的開始。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "用感謝的心情，\n開啟美好的一天。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "看見內在情緒，\n輕輕地接納自己。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "允許自己休息，\n也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "維持內心的平靜，\n穩定自己的能量。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+    { text: "全心投入當下，\n發現時間的魔力。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "專注於喜愛的事，\n內心會充滿力量。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "在挑戰中找樂趣，\n就是一種成長。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "沉浸在創作時刻，\n靈魂會閃閃發光。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "感受呼吸的流動，\n專注於此時此刻。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "在繁忙的生活中，\n保留獨處的空間。", cat: "PERMA • Engagement 投入", type: "E" },
+    { text: "一個溫暖的問候，\n能建立深厚連結。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "學會傾聽他人，\n也學會傾聽自己。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "真誠的讚美，\n是人際間最美的橋樑。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "即使意見不同，\n依然能互相尊重。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "主動分享善意，\n溫暖身邊的人。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "建立健康界線，\n保護彼此的空間。", cat: "PERMA • Relationships 人際關係", type: "R" },
+    { text: "明白行為的意義，\n讓每一步更有力。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "你的存在本身，\n就是獨特的意義。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "透過幫助他人，\n內心會更豐盛。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "在瑣碎日常中，\n尋找堅持的價值。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "追尋內心渴望，\n活出真實的模樣。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "相信自己的力量，\n能創造正向影響。", cat: "PERMA • Meaning 意義", type: "M" },
+    { text: "今天的一小步，\n是邁向成長的一步。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "感謝自己的努力，\n你已經做得很好了。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "完成一件小事，\n就是最好的肯定。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "失敗是暫時停留，\n你可以再次出發。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "慶祝微小進步，\n累積成功的信心。", cat: "PERMA • Accomplishment 成就", type: "A" },
+    { text: "堅持自己的節奏，\n不急著與人比較。", cat: "PERMA • Accomplishment 成就", type: "A" }
   ];
 
   function drawCard() {
