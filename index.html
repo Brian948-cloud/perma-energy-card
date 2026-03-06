@@ -1,198 +1,201 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>今日心理能量卡</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理能量卡</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <style>
-body, html {
-margin:0;
-padding:0;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:"Noto Sans TC", sans-serif;
-background:#FDF5E6;
-}
+  :root {
+    --bg-color: #f2eee2; 
+    --btn-default: #ebdcb2;
+    --text-main: #3a3a3a;
+    --color-p: #ffb7b2; --color-e: #ffdac1; --color-r: #b2e2f2; --color-m: #e2f0cb; --color-a: #d9c2f2;
+  }
 
-#cardContainer{
-width:90vw;
-max-width:340px;
-height:420px;
-perspective:1200px;
-}
+  body {
+    font-family: 'Noto Serif TC', serif;
+    background-color: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
 
-.card-inner{
-width:100%;
-height:100%;
-position:relative;
-transform-style:preserve-3d;
-transition:transform .6s;
-}
+  #capture-area {
+    background-color: var(--bg-color);
+    width: 360px; 
+    height: 450px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 30px;
+    position: relative;
+  }
 
-.card.flipped .card-inner{
-transform:rotateY(180deg);
-}
+  .header-container {
+    margin-top: 35px;
+    background: white;
+    width: 180px; height: 50px;
+    border-radius: 25px;
+    display: flex; justify-content: center; align-items: center;
+  }
 
-.card-face{
-position:absolute;
-width:100%;
-height:100%;
-border-radius:28px;
-backface-visibility:hidden;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:25px;
-box-shadow:0 15px 35px rgba(0,0,0,0.1);
-}
+  .title-tag {
+    background: var(--btn-default);
+    width: 154px; height: 36px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #555;
+    display: flex; justify-content: center; align-items: center;
+    letter-spacing: 2px;
+  }
 
-.card-front{
-background:linear-gradient(135deg,#fffdf7,#f6e8cc);
-font-size:24px;
-font-weight:bold;
-justify-content:center;
-}
+  .content-area {
+    flex: 1;
+    display: flex; justify-content: center; align-items: center;
+    text-align: center;
+    width: 100%;
+  }
 
-.card-back{
-background:white;
-transform:rotateY(180deg);
-justify-content:space-between;
-}
+  .quote-display {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    font-weight: 500;
+    color: var(--text-main);
+  }
 
-.card-title{
-background:#fdf5e6;
-padding:10px 20px;
-border-radius:40px;
-font-weight:bold;
-}
+  .footer-area {
+    padding-bottom: 40px;
+    text-align: center;
+    min-height: 80px;
+  }
 
-.quote{
-font-size:22px;
-text-align:center;
-line-height:1.6;
-}
+  .category-tag {
+    display: inline-block;
+    padding: 6px 22px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #444;
+  }
 
-.badge{
-padding:8px 18px;
-border-radius:20px;
-font-size:14px;
-}
+  .date-display {
+    color: #999;
+    font-size: 0.8rem;
+  }
 
-.badge-P{background:#FFD966;}
-.badge-E{background:#6FA8DC;}
-.badge-R{background:#EA9999;}
-.badge-M{background:#B4A7D6;}
-.badge-A{background:#93C47D;}
+  .controls { margin-top: 25px; display: flex; gap: 15px; }
 
-.buttons{
-position:fixed;
-bottom:30px;
-display:none;
-}
+  button {
+    font-family: 'Noto Serif TC', serif;
+    background-color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+    color: #666;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
 
-button{
-padding:12px 24px;
-border:none;
-border-radius:25px;
-background:#EAD8B7;
-margin:5px;
-font-size:16px;
-}
-
+  .save-btn { background-color: #6c8cff; color: white; }
+  .hidden { display: none !important; }
 </style>
-
 </head>
-
 <body>
 
-<div id="cardContainer">
-<div class="card" id="card">
-<div class="card-inner">
+<div id="capture-area">
+  <div class="header-container">
+    <div class="title-tag">心理能量卡</div>
+  </div>
 
-<div class="card-face card-front">
-點擊抽取<br>今日心理能量
+  <div class="content-area">
+    <div class="quote-display" id="quote">
+      點擊下方按鈕<br>抽一張心理能量卡
+    </div>
+  </div>
+
+  <div class="footer-area">
+    <div id="result-info" class="hidden">
+      <div class="category-tag" id="category">PERMA</div>
+      <div class="date-display" id="today-date"></div>
+    </div>
+  </div>
 </div>
 
-<div class="card-face card-back">
-
-<div class="card-title">今日心理能量卡</div>
-
-<div class="quote" id="quote"></div>
-
-<div class="badge" id="badge"></div>
-
-<div id="date"></div>
-
-</div>
-</div>
-</div>
-</div>
-
-<div class="buttons" id="buttons">
-<button onclick="downloadCard()">儲存圖卡</button>
-<button onclick="location.reload()">再抽一次</button>
+<div class="controls">
+  <button id="start-btn" onclick="drawCard()">抽一張卡</button>
+  <button id="save-btn" class="save-btn hidden" onclick="saveAsImage()">儲存圖卡</button>
+  <button id="reset-btn" class="hidden" onclick="resetPage()">再抽一次</button>
 </div>
 
 <script>
+const permaColors = { "P": "var(--color-p)", "E": "var(--color-e)", "R": "var(--color-r)", "M": "var(--color-m)", "A": "var(--color-a)" };
 
-const cards=[
-
-{quote:"今天的一小步，也是邁向成長的重要一步。",tag:"Accomplishment 成就",type:"A"},
-{quote:"情緒被看見時，力量就開始恢復。",tag:"Relationships 人際連結",type:"R"},
-{quote:"專注當下的投入，就是通往心流的入口。",tag:"Engagement 心流投入",type:"E"},
-{quote:"即使在困難中，人仍能找到生命的意義。",tag:"Meaning 生命意義",type:"M"},
-{quote:"允許自己慢慢來，也是一種成熟的力量。",tag:"Positive Emotion 正向情緒",type:"P"}
-
+// 已擴充至 20 張卡片
+const quotes = [
+  { text: "今天的每一份好心情，都是珍貴的禮物。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+  { text: "允許自己休息，也是前進的一部分。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+  { text: "發現生活中的微小美好，就是幸福的開始。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+  { text: "感受當下的呼吸，讓心平靜下來。", cat: "PERMA • Positive Emotions 正向情緒", type: "P" },
+  { text: "全心投入當下，你會發現時間的魔力。", cat: "PERMA • Engagement 投入", type: "E" },
+  { text: "專注於你喜愛的事，內心會充滿力量。", cat: "PERMA • Engagement 投入", type: "E" },
+  { text: "在挑戰中找到樂趣，就是一種成長。", cat: "PERMA • Engagement 投入", type: "E" },
+  { text: "沉浸在創作的時刻，靈魂會發光。", cat: "PERMA • Engagement 投入", type: "E" },
+  { text: "一個溫暖的問候，能建立深厚的連結。", cat: "PERMA • Relationships 人際關係", type: "R" },
+  { text: "學會傾聽他人，也學會傾聽自己。", cat: "PERMA • Relationships 人際關係", type: "R" },
+  { text: "真誠的讚美，是人與人之間最美的橋樑。", cat: "PERMA • Relationships 人際關係", type: "R" },
+  { text: "即使意見不同，我們依然可以互相尊重。", cat: "PERMA • Relationships 人際關係", type: "R" },
+  { text: "明白行為背後的意義，讓每一步更有力。", cat: "PERMA • Meaning 意義", type: "M" },
+  { text: "你的存在，本身就是一個獨特的意義。", cat: "PERMA • Meaning 意義", type: "M" },
+  { text: "幫助他人，也能讓自己的內心更豐盛。", cat: "PERMA • Meaning 意義", type: "M" },
+  { text: "在瑣碎的日常中，尋找值得堅持的價值。", cat: "PERMA • Meaning 意義", type: "M" },
+  { text: "今天的一小步，也是邁向成長的重要一步。", cat: "PERMA • Accomplishment 成就", type: "A" },
+  { text: "感謝自己今天的努力，你已經做得很好了。", cat: "PERMA • Accomplishment 成就", type: "A" },
+  { text: "完成一件小事，就是給自己最好的肯定。", cat: "PERMA • Accomplishment 成就", type: "A" },
+  { text: "失敗只是暫時的停留，你可以再次出發。", cat: "PERMA • Accomplishment 成就", type: "A" }
 ];
 
-const card=document.getElementById("card");
+function drawCard() {
+  const selected = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById("quote").innerText = selected.text;
+  const catEl = document.getElementById("category");
+  catEl.innerText = selected.cat;
+  catEl.style.backgroundColor = permaColors[selected.type];
+  document.getElementById("today-date").innerText = new Date().toLocaleDateString();
 
-card.addEventListener("click",function(){
-
-if(card.classList.contains("flipped")) return;
-
-const res=cards[Math.floor(Math.random()*cards.length)];
-
-document.getElementById("quote").innerText=res.quote;
-
-const b=document.getElementById("badge");
-
-b.innerText="PERMA · "+res.tag;
-
-b.className="badge badge-"+res.type;
-
-document.getElementById("date").innerText=new Date().toLocaleDateString();
-
-card.classList.add("flipped");
-
-document.getElementById("buttons").style.display="block";
-
-});
-
-function downloadCard(){
-
-html2canvas(document.getElementById("cardContainer"),{
-scale:3
-}).then(canvas=>{
-
-const link=document.createElement("a");
-
-link.download="心理能量卡.png";
-
-link.href=canvas.toDataURL();
-
-link.click();
-
-});
-
+  document.getElementById("start-btn").classList.add("hidden");
+  document.getElementById("save-btn").classList.remove("hidden");
+  document.getElementById("reset-btn").classList.remove("hidden");
+  document.getElementById("result-info").classList.remove("hidden");
 }
 
+function resetPage() {
+  document.getElementById("quote").innerHTML = "點擊下方按鈕<br>抽一張心理能量卡";
+  document.getElementById("start-btn").classList.remove("hidden");
+  document.getElementById("save-btn").classList.add("hidden");
+  document.getElementById("reset-btn").classList.add("hidden");
+  document.getElementById("result-info").classList.add("hidden");
+}
+
+async function saveAsImage() {
+  const area = document.getElementById("capture-area");
+  const canvas = await html2canvas(area, { scale: 3 });
+  const link = document.createElement("a");
+  link.download = `心理能量卡-${new Date().getTime()}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
 </script>
 
 </body>
