@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="心理能量卡">
   <link rel="apple-touch-icon" href="https://via.placeholder.com/180/e5d8b5/5a5a5a?text=能量卡">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>心理能量卡</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
@@ -29,9 +29,9 @@
       min-height: 100vh;
       margin: 0;
       -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
 
-    /* 核心截圖區域：優化圓角與內容溢出 */
     #capture-area {
       background-color: var(--bg-main);
       width: 330px; 
@@ -40,12 +40,10 @@
       flex-direction: column;
       align-items: center;
       box-sizing: border-box;
-      /* 增加圓角弧度，並確保下載時背景跟著切圓角 */
       border-radius: 24px; 
       overflow: hidden; 
       position: relative;
       margin-bottom: 25px;
-      /* 網頁顯示時的陰影，截圖時會透過 JS 處理 */
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       padding: 0 20px;
     }
@@ -89,6 +87,22 @@
       width: 100%;
     }
 
+    /* 浮現與淡入動畫效果 */
+    @keyframes quoteFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quote-fade {
+      animation: quoteFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
     .footer-area {
       padding-bottom: 35px;
       text-align: center;
@@ -115,27 +129,102 @@
 
     .date-display { color: #aaa; font-size: 0.8rem; letter-spacing: 1px; }
 
-    .controls { display: flex; gap: 15px; }
+    /* 按鈕容器配置 */
+    .controls { 
+      display: flex; 
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px; 
+      max-width: 360px;
+    }
 
     button {
       font-family: 'Noto Serif TC', serif;
       border: none;
-      padding: 12px 28px;
+      padding: 11px 22px;
       border-radius: 30px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       font-weight: 700;
-      color: #666;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       transition: all 0.2s ease;
+      touch-action: manipulation;
     }
 
     .save-btn { background-color: var(--btn-blue); color: white; }
+    .share-btn { 
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+      color: white; 
+    }
     .reset-btn { background-color: white; color: #666; }
     .draw-btn { background-color: #e5d8b5; color: #5a5a5a; }
 
     button:active { transform: scale(0.96); opacity: 0.9; }
     .hidden { display: none !important; }
+
+    /* IG 引流簡約文字區 */
+    .ig-link-container {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .ig-link {
+      font-family: 'Noto Serif TC', serif;
+      color: #888;
+      font-size: 0.82rem;
+      text-decoration: none;
+      letter-spacing: 0.8px;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .ig-link:hover, .ig-link:active {
+      color: #e1306c;
+    }
+
+    .ig-handle {
+      font-weight: 700;
+      color: #666;
+    }
+
+    /* 彈窗樣式 */
+    #image-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 99999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+    }
+    #image-modal p {
+      color: #ffffff;
+      font-size: 1rem;
+      margin-bottom: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    #modal-img {
+      max-width: 82%;
+      max-height: 62vh;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      object-fit: contain;
+    }
+    .modal-close-btn {
+      margin-top: 18px;
+      padding: 10px 32px;
+      border-radius: 25px;
+      background: #ffffff;
+      color: #333333;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -160,9 +249,24 @@
 </div>
 
 <div class="controls">
-  <button id="start-btn" class="draw-btn" onclick="drawCard()">抽一張卡</button>
-  <button id="save-btn" class="save-btn hidden" onclick="saveAsImage()">儲存圖卡</button>
-  <button id="reset-btn" class="reset-btn hidden" onclick="resetPage()">再抽一次</button>
+  <button id="start-btn" class="draw-btn" type="button" onclick="drawCard()">抽一張卡</button>
+  <button id="save-btn" class="save-btn hidden" type="button" onclick="saveAsImage(event)">儲存圖卡</button>
+  <button id="share-btn" class="share-btn hidden" type="button" onclick="shareToInstagram(event)">分享到 IG</button>
+  <button id="reset-btn" class="reset-btn hidden" type="button" onclick="resetPage()">再抽一次</button>
+</div>
+
+<!-- 簡約質感的 IG 追蹤文字 -->
+<div class="ig-link-container">
+  <a href="https://instagram.com/shining.sprout" target="_blank" rel="noopener noreferrer" class="ig-link">
+    追蹤 Instagram：<span class="ig-handle">@shining.sprout</span>
+  </a>
+</div>
+
+<!-- 彈窗備用 -->
+<div id="image-modal">
+  <p id="modal-tip">👇 長按卡片即可「加入照片」</p>
+  <img id="modal-img" alt="心理能量卡" />
+  <button type="button" class="modal-close-btn" onclick="closeModal()">關閉</button>
 </div>
 
 <script>
@@ -203,7 +307,16 @@
 
   function drawCard() {
     const selected = quotes[Math.floor(Math.random() * quotes.length)];
-    document.getElementById("quote").innerText = selected.text;
+    const quoteEl = document.getElementById("quote");
+    const resultInfoEl = document.getElementById("result-info");
+
+    quoteEl.classList.remove("quote-fade");
+    resultInfoEl.classList.remove("quote-fade");
+    void quoteEl.offsetWidth; // 強制重繪以觸發平滑浮現動畫
+
+    quoteEl.innerText = selected.text;
+    quoteEl.classList.add("quote-fade");
+
     const catEl = document.getElementById("category");
     catEl.innerText = selected.cat;
     catEl.style.backgroundColor = permaColors[selected.type];
@@ -211,24 +324,28 @@
     const now = new Date();
     document.getElementById("today-date").innerText = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
 
+    resultInfoEl.classList.add("quote-fade");
+
     document.getElementById("start-btn").classList.add("hidden");
     document.getElementById("save-btn").classList.remove("hidden");
+    document.getElementById("share-btn").classList.remove("hidden");
     document.getElementById("reset-btn").classList.remove("hidden");
-    document.getElementById("result-info").classList.remove("hidden");
+    resultInfoEl.classList.remove("hidden");
   }
 
   function resetPage() {
-    document.getElementById("quote").innerHTML = "點擊下方按鈕<br>抽一張心理能量卡";
+    const quoteEl = document.getElementById("quote");
+    quoteEl.classList.remove("quote-fade");
+    quoteEl.innerHTML = "點擊下方按鈕<br>抽一張心理能量卡";
     document.getElementById("start-btn").classList.remove("hidden");
     document.getElementById("save-btn").classList.add("hidden");
+    document.getElementById("share-btn").classList.add("hidden");
     document.getElementById("reset-btn").classList.add("hidden");
     document.getElementById("result-info").classList.add("hidden");
   }
 
-  async function saveAsImage() {
+  async function generateCardBlob() {
     const area = document.getElementById("capture-area");
-    
-    // 下載時暫時移除陰影，避免圓角邊緣產生雜訊
     const originalShadow = area.style.boxShadow;
     area.style.boxShadow = "none";
 
@@ -236,21 +353,71 @@
       const canvas = await html2canvas(area, { 
         scale: 3, 
         useCORS: true,
-        // 關鍵設定：背景為 null，讓圓角外呈現透明
         backgroundColor: null,
         logging: false
       });
 
-      const link = document.createElement("a");
-      link.download = `能量卡-${new Date().getTime()}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    } catch (error) {
-      console.error("儲存圖片失敗", error);
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          resolve({ blob, dataUrl: canvas.toDataURL("image/png") });
+        }, "image/png");
+      });
     } finally {
-      // 恢復網頁上的陰影
       area.style.boxShadow = originalShadow;
     }
+  }
+
+  async function saveAsImage(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    try {
+      const { dataUrl } = await generateCardBlob();
+      document.getElementById("modal-tip").innerText = "👇 長按卡片即可「加入照片」";
+      const modal = document.getElementById("image-modal");
+      const modalImg = document.getElementById("modal-img");
+      modalImg.src = dataUrl;
+      modal.style.display = "flex";
+    } catch (e) {
+      console.error(e);
+      alert("產生圖片失敗，請直接截圖使用！");
+    }
+  }
+
+  async function shareToInstagram(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    try {
+      const { blob, dataUrl } = await generateCardBlob();
+      const file = new File([blob], "心理能量卡.png", { type: "image/png" });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "心理能量卡",
+          text: "分享今天的心理能量卡！"
+        });
+      } else {
+        document.getElementById("modal-tip").innerText = "👇 長按儲存卡片後，即可發布至 IG！";
+        const modal = document.getElementById("image-modal");
+        const modalImg = document.getElementById("modal-img");
+        modalImg.src = dataUrl;
+        modal.style.display = "flex";
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error("分享失敗", error);
+      }
+    }
+  }
+
+  function closeModal() {
+    document.getElementById("image-modal").style.display = "none";
   }
 </script>
 
